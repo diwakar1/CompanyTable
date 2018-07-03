@@ -1,0 +1,132 @@
+create database customers;
+use customers;
+
+select*from customers;
+
+
+drop table person;
+drop table pet;
+drop table person_pet;
+
+CREATE TABLE person (
+    person_id INTEGER PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    age INTEGER
+);
+
+insert into person(person_id, first_name,last_name,age) values (1,"Dave","wolf",12);
+insert into person(person_id, first_name,last_name,age) values (2,"Bart","Simpson",10);
+
+
+CREATE TABLE pet (
+    pet_id INTEGER PRIMARY KEY,
+    name VARCHAR(50),
+    breed VARCHAR(50),
+    age INTEGER,
+    dead INTEGER,
+    person_id INTEGER ,
+    foreign key (person_id) references person(person_id)
+);
+
+insert into pet(pet_id,name,breed,age,dead,person_id) values (1,"black","nepali",12,20,1);
+insert into pet(pet_id,name,breed,age,dead,person_id) values (2,"white","mexican",5,20,2);
+
+
+
+CREATE TABLE person_pet (
+    pp_id INTEGER primary key,
+    pp_name Varchar(50),
+    pp_age int,
+    person_id INTEGER,
+    foreign key (person_id) references person(person_id)
+
+);
+
+
+insert into person_pet(pp_id, pp_name,pp_age,person_id) values (1,"rat",5,1);
+insert into person_pet(pp_id, pp_name,pp_age,person_id) values (2,"mat",6,2);
+
+
+select first_name,last_name from person ,person_pet where person.person_id = 
+person_pet.person_id and  pp_age <=50;
+
+
+
+SELECT * FROM person;
+
+SELECT name, age FROM pet;
+
+SELECT name, age FROM pet WHERE dead = 0;
+
+SELECT * FROM person WHERE first_name != 'Dave';
+
+
+select name from pet where age >10;
+select first_name,last_name from person where age<30;
+select first_name,last_name from person where age>30;
+select pp_name,pp_age from person, person_pet where person.person_id 
+=person_pet.person_id and first_name="Dave"and age<30;
+
+
+SELECT pet.pet_id, pet.name, pet.age, pet.dead,person.first_name,person.last_name,person.age
+    FROM pet, person_pet, person
+    WHERE
+    person.person_id=person_pet.person_id and
+    person.person_id=pet.person_id;
+
+
+select first_name,age from person where age>10;
+update person set age = 99 where id=1;
+delete from person where id= 2;
+
+
+
+
+select count(*) as CustomerCount from customers;
+
+select count(distinct company)as 'Distinct Companies' from customers ;
+
+alter table customers add CompanyID int;
+
+select companyID, company from customers;
+
+drop table Company;
+create table Company (
+companyID int NOT NULL AUTO_INCREMENT,
+Company varchar(50),
+primary key (companyID)
+);
+
+select*from Company;
+
+describe Company;
+
+insert into Company (company) select distinct company from customers;
+
+select * from Company;
+
+select companyID, Company from customers;
+
+-- update the compnayId in the customers table
+update customers c set c.companyID = (select t.companyID from
+Company t where t.company=c.company);
+
+select c.companyID,c.company,t.companyID,t.Company from
+customers c inner join Company t on c.CompanyID=t.CompanyID;
+
+alter table customers drop column company;
+
+select * from customers;
+
+select * from Company;
+
+
+select fullname, company from customers 
+inner join Company on 
+customers.companyid=Company.companyid;
+
+
+
+
+
